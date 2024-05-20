@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/803482799.svg)](https://zenodo.org/doi/10.5281/zenodo.11225291)
+
 ## Data preparation and model for predicting crop residue burning outcomes in sampled fields in Punjab, India
 This repository was prepared to support publication of "Money (not) to burn: Payments for ecosystem services to reduce crop residue burning" (MNTB). 
 
