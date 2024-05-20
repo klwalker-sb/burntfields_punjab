@@ -1,0 +1,24 @@
+#!/bin/bash  -l
+#SBATCH --nodes=1 --ntasks-per-node 1
+#  this is asking for 1 node, with 1 core
+#     the -l is needed on first line if you want to use modules
+#SBATCH --job-name=PlanetOrder
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=<your_email>
+#SBATCH --output=plorder.%j.log # STDOUT
+#SBATCH --error=plorder.%j.err # STDERR
+
+#Settables:
+NAME="Punjab_ALL_2019_part3"
+IDLIST="<path/to/data_dir>/PlanetList.csv" 
+ITEM="PSScene4Band"
+BUNDLE="analytic_udm2"
+##########################################################
+#Activate the virtual environment (which relys on anaconda)
+source ~/.bashrc
+conda activate venv.burntfields
+cd $SLURM_SUBMIT_DIR
+porder order --name $NAME --idlist $IDLIST --item $ITEM --bundle $BUNDLE --op email
+
+cp -f ~/code/bash/plorder.${SLURM_JOB_ID}.log /home/kelseyjack/planet/Punjab2019/Radiance/OrderSummary3.log
+

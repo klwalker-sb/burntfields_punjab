@@ -1,0 +1,16 @@
+### Basic Linux script to download Sentinel Images from GEE onto Cluster
+
+\\Get GEE ids from Sentinel list
+var s2Cloudless = ee.Image('COPERNICUS/S2_CLOUD_PROBABILITY/20191104T054009_20191104T054544_T43RDQ')
+var projection = s2Cloudless.projection().getInfo();
+var reg = s2Cloudless.geometry().bounds().getInfo();
+
+Export.image.toDrive({
+  image: s2Cloudless,
+  description: '20191104_T43RDQ_cloudprob',
+  crs: projection.crs,
+  scale: 20,
+  maxPixels: 100000000,
+  region: reg,
+  crsTransform: projection.transform
+});

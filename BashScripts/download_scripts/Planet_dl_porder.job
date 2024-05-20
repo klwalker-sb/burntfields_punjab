@@ -1,0 +1,20 @@
+#!/bin/bash  -l
+#SBATCH --nodes=2 --ntasks-per-node 12
+#  this is asking for 2 nodes, with 12 cores per node
+#     the -l is needed on first line if you want to use modules
+#SBATCH --job-name=PlanetDL
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=<your_email>
+#SBATCH --output=pldown.%j.out # STDOUT
+#SBATCH --error=pldown.%j.err # STDERR 
+sleep $((RANDOM%30+1))
+
+#Settables:
+URL="https://api.planet.com/compute/ops/orders/v2/<order_id>"
+STORAGE="/path/to/image/directory/on/cluster"
+
+#Activate the virtual environment (which relys on anaconda)
+conda activate venv.burntfields
+cd $SLURM_SUBMIT_DIR
+porder multiproc --url $URL --local $STORAGE
+

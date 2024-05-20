@@ -1,0 +1,30 @@
+#!/bin/bash  -l
+#SBATCH --nodes=1 --ntasks-per-node 12
+#  this is asking for 1 node, with 12 cores
+#     the -l is needed on first line if you want to use modules
+#SBATCH --job-name=PlanetList
+#SBATCH --mail-type=END,FAIL
+#SBATCH --mail-user=<your_email>
+#SBATCH --output=pllist.%j.log # STDOUT
+#SBATCH --error=pllist.%j.err # STDERR 
+#Copy log file into permanent location:
+
+#Settables:
+AOI="<path/todata_dir>/AOI_single.geojson"
+START="2019-10-01"
+END="2019-12-10"
+ITEM="PSScene4Band"
+ASSET="analytic"
+OUTFILE="/path/to/location/for/order_list/PlanetList.csv"
+NUMMAX=2000
+CLOUDMAX=10
+OVERLAP=50
+
+#Activate the virtual environment (which relys on anaconda)
+source ~/.bashrc
+conda activate venv.burntfields
+cd $SLURM_SUBMIT_DIR
+porder idlist --input $AOI --start $START --end $END --item $ITEM --asset $ASSET --number $NUMMAX --outfile $OUTFILE --cmax $CLOUDMAX --overlap $OVERLAP
+
+cp -f ~/code/bash/pllist.${SLURM_JOB_ID}.log /path/to/location/for/order_list/ListSummary.log
+
